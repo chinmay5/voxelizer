@@ -1,0 +1,1 @@
+/usr/bin/c++  --std=gnu++11  -O3 -fopenmp  -rdynamic CMakeFiles/voxelize.dir/main.cpp.o  -o ../bin/voxelize -Wl,-rpath,/usr/lib/x86_64-linux-gnu/hdf5/serial -lboost_system -lboost_filesystem -lboost_program_options /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so -lpthread -lsz -lz -ldl -lm 

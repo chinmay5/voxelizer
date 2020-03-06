@@ -1,0 +1,4 @@
+/home/chinmay/softwares/mesh-voxelization/build/CMakeFiles/rebuild_cache.dir
+/home/chinmay/softwares/mesh-voxelization/build/CMakeFiles/voxelize.dir
+/home/chinmay/softwares/mesh-voxelization/build/CMakeFiles/edit_cache.dir
+/home/chinmay/softwares/mesh-voxelization/build/CMakeFiles/read_hdf5.dir
