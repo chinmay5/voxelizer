@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CudaVoxelizer"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\cmake\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\usr\local\share\;CMake Files\..\..\..\..\..\usr\local\share\eigen3\;CMake Files\..\..\..\..\..\usr\local\share\eigen3\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cuda_voxelizer">
+				<Option output="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/cuda_voxelizer" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/chinmay/softwares/trimesh2-2.16/trimesh2/include"/>
+					<Add directory="/usr/include/hdf5/serial"/>
+					<Add directory="/usr/local/include/eigen3"/>
+					<Add directory="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/external"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libpthread.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libsz.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libz.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libdl.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libm.so"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 cuda_voxelizer"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cuda_voxelizer/fast">
+				<Option output="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/cuda_voxelizer" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/chinmay/softwares/trimesh2-2.16/trimesh2/include"/>
+					<Add directory="/usr/include/hdf5/serial"/>
+					<Add directory="/usr/local/include/eigen3"/>
+					<Add directory="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/external"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libpthread.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libsz.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libz.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libdl.so"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/libm.so"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 cuda_voxelizer/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/CMakeFiles/cuda_voxelizer.dir/src/cuda_voxelizer_generated_thrust_operations.cu.o">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake-build-debug/CMakeFiles/cuda_voxelizer.dir/src/cuda_voxelizer_generated_voxelize.cu.o">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/cpu_voxelizer.cpp">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/cpu_voxelizer.h">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/main.cpp">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/thrust_operations.cu">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/util_cuda.cpp">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/util_cuda.h">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/util_io.cpp">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/util_io.h">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/src/voxelize.cu">
+			<Option target="cuda_voxelizer"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/cmake/FindGLM.cmake">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/../../../../../usr/local/share/eigen3/cmake/Eigen3Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\eigen3\cmake\"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/../../../../../usr/local/share/eigen3/cmake/Eigen3ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\eigen3\cmake\"/>
+		</Unit>
+		<Unit filename="/home/chinmay/Desktop/reference_code/cuda_voxelizer_bkp/../../../../../usr/local/share/eigen3/cmake/Eigen3Targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\eigen3\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
