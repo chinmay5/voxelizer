@@ -87,7 +87,8 @@ void find_voxel_label(float* a, float* b, float* c, float* label) {
     if (*b == *c){
         *label =  *b;
     }
-    // In worst case, just use the max value from the three
+    // In worst case, just use the max value from the three. Maybe we can replace it with the min value since unknown label is 100
+    // however, that can stay as a future modification
     *label =  fmax(fmax(*a, *b), *c);
 }
 
@@ -237,7 +238,7 @@ __global__ void voxelize_triangle(voxinfo info, float* triangle_data, unsigned i
 						setBit(voxel_table, location);
                         setData(color_table, location, c0, c1, c2, ll);
 					} else {
-						size_t location = static_cast<size_t>(x) + (static_cast<size_t>(y)* static_cast<size_t>(info.gridsize.y)) + (static_cast<size_t>(z)* static_cast<size_t>(info.gridsize.y)* static_cast<size_t>(info.gridsize.z));
+						size_t location = static_cast<size_t>(x) + (static_cast<size_t>(y)* static_cast<size_t>(info.gridsize.x)) + (static_cast<size_t>(z)* static_cast<size_t>(info.gridsize.y)* static_cast<size_t>(info.gridsize.x));
 						setBit(voxel_table, location);
                         setData(color_table, location, c0, c1, c2, ll);
 					}

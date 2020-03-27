@@ -33,7 +33,7 @@ void read_binary(void *data, const size_t length, const std::string base_filenam
 
 void write_off(const unsigned int *vtable, const unsigned int *colortable, const size_t gridsize,
                const std::string base_filename, voxinfo voxinfo) {
-    string filename_output = base_filename + string("_") + to_string(gridsize) + string(".off");
+    string filename_output = base_filename + string("_") + string(".off");
 #ifndef SILENT
     fprintf(stdout, "[I/O] Writing data in obj format to %s \n", filename_output.c_str());
 #endif
@@ -43,15 +43,17 @@ void write_off(const unsigned int *vtable, const unsigned int *colortable, const
     std::vector<string> faces;
     std::vector<string> verts;
     long double secondScaler = 1 / voxinfo.scales.x; //Since scales remain the same for all three indices
-    double scale = gridsize;
+    double scale_x = voxinfo.gridsize.x;
+    double scale_y = voxinfo.gridsize.y;
+    double scale_z = voxinfo.gridsize.z;
     long double t_x = voxinfo.translation.x;
     long double t_y = voxinfo.translation.y;
     long double t_z = voxinfo.translation.z;
     assert(output);
-    for (size_t x = 0; x < gridsize; x++) {
-        for (size_t y = 0; y < gridsize; y++) {
-            for (size_t z = 0; z < gridsize; z++) {
-                if (checkVoxel(x, y, z, gridsize, vtable)) {
+    for (size_t x = 0; x < voxinfo.gridsize.x; x++) {
+        for (size_t y = 0; y < voxinfo.gridsize.y; y++) {
+            for (size_t z = 0; z < voxinfo.gridsize.z; z++) {
+                if (checkVoxel(x, y, z, voxinfo, vtable)) {
                     voxels_written += 8;
                     n = verts.size();
 
@@ -63,7 +65,7 @@ void write_off(const unsigned int *vtable, const unsigned int *colortable, const
 //                    verts.push_back(  std::to_string(x + 1)+" "+ std::to_string(y)+" "+ std::to_string(z + 1));
 //                    verts.push_back(  std::to_string(x + 1)+" "+ std::to_string(y + 1)+" "+ std::to_string(z) );
 //                    verts.push_back(  std::to_string(x + 1)+" "+ std::to_string(y + 1)+" "+ std::to_string(z + 1));
-                    size_t location = x + (y * gridsize) + (z * gridsize * gridsize);
+                    size_t location = x + (y * voxinfo.gridsize.x) + (z*voxinfo.gridsize.y * voxinfo.gridsize.x);
                     size_t int_location = location * size_t(4);
 //                    handle labels here since they are 100 but should be -100
                     int label = colortable[int_location + 3] == 100 ? -100 : colortable[int_location + 3];
@@ -72,37 +74,37 @@ void write_off(const unsigned int *vtable, const unsigned int *colortable, const
                                    std::to_string(colortable[int_location + 2]) + " " +
                                    std::to_string(label);
 
-                    verts.push_back(std::to_string((x / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string((x / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string((x / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string((x / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
 
 //                    [0, 1, 2], [2, 3, 0], [1, 5, 6], [6, 2, 1], [7, 6, 5], [5, 4, 7],
@@ -186,21 +188,24 @@ void write_binvox(const unsigned int *vtable, const size_t gridsize, const std::
     for (size_t x = 0; x < gridsize; x++) {
         for (size_t z = 0; z < gridsize; z++) {
             for (size_t y = 0; y < gridsize; y++) {
-                if (x == 0 && y == 0 && z == 0) { // special case: first voxel
-                    currentvalue = checkVoxel(0, 0, 0, gridsize, vtable);
-                    output.write((char *) &currentvalue, 1);
-                    current_seen = 1;
-                    continue;
-                }
-                char nextvalue = checkVoxel(x, y, z, gridsize, vtable);
-                if (nextvalue != currentvalue || current_seen == (char) 255) {
-                    output.write((char *) &current_seen, 1);
-                    current_seen = 1;
-                    currentvalue = nextvalue;
-                    output.write((char *) &currentvalue, 1);
-                } else {
-                    current_seen++;
-                }
+                 std::printf("The code is currently broken and functionality not available");
+                 output.close();
+                 return;
+//                if (x == 0 && y == 0 && z == 0) { // special case: first voxel
+//                    currentvalue = checkVoxel(0, 0, 0, gridsize, vtable);
+//                    output.write((char *) &currentvalue, 1);
+//                    current_seen = 1;
+//                    continue;
+//                }
+//                char nextvalue = checkVoxel(x, y, z, gridsize, vtable);
+//                if (nextvalue != currentvalue || current_seen == (char) 255) {
+//                    output.write((char *) &current_seen, 1);
+//                    current_seen = 1;
+//                    currentvalue = nextvalue;
+//                    output.write((char *) &currentvalue, 1);
+//                } else {
+//                    current_seen++;
+//                }
             }
         }
     }
@@ -292,26 +297,25 @@ bool write_int_hdf5(const std::string filepath, Eigen::Tensor<int, RANK, Eigen::
 
 bool combine_data(const unsigned int *vtable, const unsigned int *colortable, const size_t gridsize,
                   voxinfo voxinfo, const string output) {
-    Eigen::Tensor<int, 4, Eigen::RowMajor> occ(gridsize, gridsize, gridsize, 4);
+    Eigen::Tensor<int, 4, Eigen::RowMajor> occ(voxinfo.gridsize.x, voxinfo.gridsize.y, voxinfo.gridsize.z, 4);
     occ.setZero();
 //    Last column is set to -100 since that is how we have generated the labels for ourselves
 //    occ(Eigen::all, Eigen::last)= -100;
 //    occ:all
-    for (size_t x = 0; x < gridsize; x++) {
-        for (size_t y = 0; y < gridsize; y++) {
-            for (size_t z = 0; z < gridsize; z++) {
+    for (size_t x = 0; x < voxinfo.gridsize.x; x++) {
+        for (size_t y = 0; y < voxinfo.gridsize.y; y++) {
+            for (size_t z = 0; z < voxinfo.gridsize.z; z++) {
 //                This is the data that we have. We simply need to write this into an Eigen Tensor.
 //                In case we have no intersection at this location, that means it
 //                is empty space.
-                if (checkVoxel(x, y, z, gridsize, vtable)) {
-                    size_t location = x + (y * gridsize) + (z * gridsize * gridsize);
+                if (checkVoxel(x, y, z, voxinfo, vtable)) {
+                    size_t location = x + (y * voxinfo.gridsize.x) + (z* voxinfo.gridsize.y * voxinfo.gridsize.x);
                     size_t int_location = location * size_t(4);
                     occ(x, y, z, 0) = colortable[int_location];
                     occ(x, y, z, 1) = colortable[int_location + 1];
                     occ(x, y, z, 2) = colortable[int_location + 2];
 //                Again labels need to be specifically checked since we stored them as 100 as they are unsigned here
                     int label = colortable[int_location + 3] == 100 ? -100 : colortable[int_location + 3];
-
                     occ(x, y, z, 3) = label;
                 } else {
 //                    Once it is empty space, that also means that we should put a label of -100 there since this is a don't care

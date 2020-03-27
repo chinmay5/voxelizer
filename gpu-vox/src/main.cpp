@@ -24,6 +24,9 @@
 #define TINYPLY_IMPLEMENTATION
 #include "tinyply.h"
 
+//Header files for the Boost function
+#include <bits/stdc++.h>
+#include <boost/algorithm/string.hpp>
 
 
 using namespace std;
@@ -43,6 +46,9 @@ string filename = "";
 string filename_base = "";
 OutputFormat outputformat = OutputFormat::output_binvox;
 unsigned int gridsize = 256;
+unsigned int gridsize_x = 0;
+unsigned int gridsize_y = 0;
+unsigned int gridsize_z = 0;
 bool useThrustPath = false;
 bool forceCPU = false;
 
@@ -145,7 +151,24 @@ void parseProgramParameters(int argc, char* argv[]){
 		else if (string(argv[i]) == "-s") {
 			gridsize = atoi(argv[i + 1]);
 			i++;
-		} else if (string(argv[i]) == "-h") {
+//			Use the same value for all grid dimensions
+            gridsize_x = gridsize;
+            gridsize_y = gridsize;
+            gridsize_z = gridsize;
+		}
+//		Just add another parameter which can give outputs at different scale.
+        else if (string(argv[i]) == "-vs") {
+//            Using boost library
+            vector<string> result;
+            string input = argv[i+1];
+            boost::split(result, input, boost::is_any_of(","));
+
+            gridsize_x = stoi(result.at(0));
+            gridsize_y = stoi(result.at(1));
+            gridsize_z = stoi(result.at(2));
+            i ++;
+        }
+        else if (string(argv[i]) == "-h") {
 			printHelp();
 			exit(0);
 		} else if (string(argv[i]) == "-o") {
@@ -172,7 +195,7 @@ void parseProgramParameters(int argc, char* argv[]){
 		exit(1);
 	}
 	fprintf(stdout, "[Info] Filename: %s \n", filename.c_str());
-	fprintf(stdout, "[Info] Grid size: %i \n", gridsize);
+	fprintf(stdout, "[Info] Grid size: %i %i %i\n", gridsize_x, gridsize_y, gridsize_z);
 	fprintf(stdout, "[Info] Output format: %s \n", OutputFormats[int(outputformat)]);
 	fprintf(stdout, "[Info] Using CUDA Thrust: %s (default: No)\n", useThrustPath ? "Yes" : "No");
 }
@@ -206,7 +229,7 @@ int main(int argc, char *argv[]) {
 	AABox<glm::vec3> bbox_mesh(trimesh_to_glm(themesh->bbox.min), trimesh_to_glm(themesh->bbox.max));
 	// Transform that AABox to a cubical box (by padding directions if needed)
 	// Create voxinfo struct, which handles all the rest
-	voxinfo voxelization_info(createMeshBBCube<glm::vec3>(bbox_mesh), glm::uvec3(gridsize, gridsize, gridsize), themesh->faces.size());
+	voxinfo voxelization_info(createMeshBBCube<glm::vec3>(bbox_mesh), glm::uvec3(gridsize_x, gridsize_y, gridsize_z), themesh->faces.size());
 	voxelization_info.print();
 	// Compute space needed to hold voxel table (1 voxel / bit)
 	size_t vtable_size = static_cast<size_t>(ceil(static_cast<size_t>(voxelization_info.gridsize.x)* static_cast<size_t>(voxelization_info.gridsize.y)* static_cast<size_t>(voxelization_info.gridsize.z)) / 8.0f);

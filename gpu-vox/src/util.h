@@ -27,21 +27,6 @@ inline trimeshtype glm_to_trimesh(glm::vec3 a) {
 	return trimeshtype(a[0], a[1], a[2]);
 }
 
-// Check if a voxel in the voxel table is set
-__device__ __host__ inline bool checkVoxel(size_t x, size_t y, size_t z, size_t gridsize, const unsigned int* vtable){
-	size_t location = x + (y*gridsize) + (z*gridsize*gridsize);
-	size_t int_location = location / size_t(32);
-	/*size_t max_index = (gridsize*gridsize*gridsize) / __int64(32);
-	if (int_location >= max_index){
-	fprintf(stdout, "Requested index too big: %llu \n", int_location);
-	fprintf(stdout, "X %llu Y %llu Z %llu \n", int_location);
-	}*/
-	unsigned int bit_pos = size_t(31) - (location % size_t(32)); // we count bit positions RtL, but array indices LtR
-	if ((vtable[int_location]) & (1 << bit_pos)){
-		return true;
-	}
-	return false;
-}
 
 // An Axis Aligned box
 template <typename T>
@@ -85,9 +70,9 @@ struct voxinfo {
         translation.y = -centres.y;
         translation.z = -centres.z;
 //        Now the scales that ought to be used
-        scales.x = 1 / (sizes[0]);
-        scales.y = 1 / (sizes[1]);
-        scales.z = 1 / (sizes[2]);
+        scales.x = 1 / (sizes.x);
+        scales.y = 1 / (sizes.y);
+        scales.z = 1 / (sizes.z);
     }
 
 	void print() {
@@ -117,6 +102,23 @@ struct voxinfo {
         vertex.z = vertex.z * gridsize.z;
     }
 };
+
+// Check if a voxel in the voxel table is set
+__device__ __host__ inline bool checkVoxel(size_t x, size_t y, size_t z, voxinfo voxinfo, const unsigned int* vtable){
+    size_t location = x + (y * voxinfo.gridsize.x) + (z*voxinfo.gridsize.y * voxinfo.gridsize.x);
+    size_t int_location = location / size_t(32);
+    /*size_t max_index = (gridsize*gridsize*gridsize) / __int64(32);
+    if (int_location >= max_index){
+    fprintf(stdout, "Requested index too big: %llu \n", int_location);
+    fprintf(stdout, "X %llu Y %llu Z %llu \n", int_location);
+    }*/
+    unsigned int bit_pos = size_t(31) - (location % size_t(32)); // we count bit positions RtL, but array indices LtR
+    if ((vtable[int_location]) & (1 << bit_pos)){
+        return true;
+    }
+    return false;
+}
+
 
 // Create mesh BBOX _cube_, using the maximum length between bbox min and bbox max
 // We want to end up with a cube that is this max length.
