@@ -342,6 +342,10 @@ bool write_transformations(const voxinfo &voxinfo, const std::string &output) {
     myfile << ", ";
     myfile << "\"translation\": [" + to_string(voxinfo.translation.x) + ", " + to_string(voxinfo.translation.y) + ", " +
               to_string(voxinfo.translation.z) + "]";
+//    Including the voxel size parameter as well
+    myfile << ", ";
+    myfile << "\"size\": [" + to_string(voxinfo.unit.x) + ", " + to_string(voxinfo.unit.y) + ", " +
+              to_string(voxinfo.unit.z) + "]";
     myfile << "}";
     myfile.close();
 }
