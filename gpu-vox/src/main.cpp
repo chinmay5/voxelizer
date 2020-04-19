@@ -51,6 +51,7 @@ unsigned int gridsize_y = 0;
 unsigned int gridsize_z = 0;
 bool useThrustPath = false;
 bool forceCPU = false;
+float voxel_size = 0.0;
 
 class PlyFile;
 
@@ -88,46 +89,13 @@ float* meshToGPU_managed(const trimesh::TriMesh *mesh) {
 		glm::vec3 v2 = trimesh_to_glm<trimesh::point>(mesh->vertices[mesh->faces[i][2]]);
 		size_t j = i * 9;
 		memcpy((device_triangles)+j, glm::value_ptr(v0), sizeof(glm::vec3));
-		memcpy((device_triangles)+j+3, glm::value_ptr(v1), sizeof(glm::vec3));
-		memcpy((device_triangles)+j+6, glm::value_ptr(v2), sizeof(glm::vec3));
+		memcpy((device_triangles)+ j+3, glm::value_ptr(v1), sizeof(glm::vec3));
+		memcpy((device_triangles)+ j+6, glm::value_ptr(v2), sizeof(glm::vec3));
 	}
 	t.stop();fprintf(stdout, "[Perf] Mesh transfer time to GPU: %.1f ms \n", t.elapsed_time_milliseconds);
 
-	//for (size_t i = 0; i < mesh->faces.size(); i++) {
-	//	size_t t = i * 9;
-	//	std::cout << "Tri: " << device_triangles[t] << " " << device_triangles[t + 1] << " " << device_triangles[t + 2] << std::endl;
-	//	std::cout << "Tri: " << device_triangles[t + 3] << " " << device_triangles[t + 4] << " " << device_triangles[t + 5] << std::endl;
-	//	std::cout << "Tri: " << device_triangles[t + 6] << " " << device_triangles[t + 7] << " " << device_triangles[t + 8] << std::endl;
-	//}
-
 	return device_triangles;
 }
-
-//// METHOD 2: Helper function to transfer triangles to old-style, self-managed CUDA memory ( < CUDA 7.x )
-//float* meshToGPU(const trimesh::TriMesh *mesh){
-//	size_t n_floats = sizeof(float) * 9 * (mesh->faces.size());
-//	float* pagelocktriangles;
-//	fprintf(stdout, "Allocating %llu kb of page-locked HOST memory \n", (size_t)(n_floats / 1024.0f));
-//	checkCudaErrors(cudaHostAlloc((void**)&pagelocktriangles, n_floats, cudaHostAllocDefault)); // pinned memory to easily copy from
-//	fprintf(stdout, "Copy %llu triangles to page-locked HOST memory \n", (size_t)(mesh->faces.size()));
-//	for (size_t i = 0; i < mesh->faces.size(); i++){
-//		glm::vec3 v0 = trimesh_to_glm<trimesh::point>(mesh->vertices[mesh->faces[i][0]]);
-//		glm::vec3 v1 = trimesh_to_glm<trimesh::point>(mesh->vertices[mesh->faces[i][1]]);
-//		glm::vec3 v2 = trimesh_to_glm<trimesh::point>(mesh->vertices[mesh->faces[i][2]]);
-//		size_t j = i * 9;
-//		memcpy((pagelocktriangles)+j, glm::value_ptr(v0), sizeof(glm::vec3));
-//		memcpy((pagelocktriangles)+j+3, glm::value_ptr(v1), sizeof(glm::vec3));
-//		memcpy((pagelocktriangles)+j+6, glm::value_ptr(v2), sizeof(glm::vec3));
-//	}
-//	float* device_triangles;
-//	fprintf(stdout, "Allocating %llu kb of DEVICE memory \n", (size_t)(n_floats / 1024.0f));
-//	checkCudaErrors(cudaMalloc((void **) &device_triangles, n_floats));
-//	fprintf(stdout, "Copy %llu triangles from page-locked HOST memory to DEVICE memory \n", (size_t)(mesh->faces.size()));
-//	checkCudaErrors(cudaMemcpy((void *) device_triangles, (void*) pagelocktriangles, n_floats, cudaMemcpyDefault));
-//	return device_triangles;
-//}
-
-
 
 // Parse the program parameters and set them as global variables
 void parseProgramParameters(int argc, char* argv[]){
@@ -167,6 +135,10 @@ void parseProgramParameters(int argc, char* argv[]){
             gridsize_y = stoi(result.at(1));
             gridsize_z = stoi(result.at(2));
             i ++;
+        }
+        else if (string(argv[i]) == "-voxel_size") {
+            voxel_size = atof(argv[i + 1]);
+            i++;
         }
         else if (string(argv[i]) == "-h") {
 			printHelp();
@@ -229,6 +201,13 @@ int main(int argc, char *argv[]) {
 	AABox<glm::vec3> bbox_mesh(trimesh_to_glm(themesh->bbox.min), trimesh_to_glm(themesh->bbox.max));
 	// Transform that AABox to a cubical box (by padding directions if needed)
 	// Create voxinfo struct, which handles all the rest
+//	If the voxel size is specified, it will cause creation of fixes size voxels and variable size grids
+    if (voxel_size > 0){
+        // The values should be integers
+        gridsize_x = (unsigned  int) ((themesh->bbox.max.x - themesh->bbox.min.x) / voxel_size);
+        gridsize_y = (unsigned int) ((themesh->bbox.max.y - themesh->bbox.min.y) / voxel_size);
+        gridsize_z = (unsigned int) ((themesh->bbox.max.z - themesh->bbox.min.z) / voxel_size);
+    }
 	voxinfo voxelization_info(createMeshBBCube<glm::vec3>(bbox_mesh), glm::uvec3(gridsize_x, gridsize_y, gridsize_z), themesh->faces.size());
 	voxelization_info.print();
 	// Compute space needed to hold voxel table (1 voxel / bit)
@@ -239,7 +218,7 @@ int main(int argc, char *argv[]) {
 
 //	TODO: My sections to see if things work fine
     std::unique_ptr<std::istream> file_stream;
-    string base_path = filename.substr (0, filename.find(".ply"));
+    string base_path = filename.substr (0, filename.find("_aligned"));
     string filepath = base_path + ".labels.ply";
 
     file_stream.reset(new std::ifstream(filepath, std::ios::binary));
@@ -357,7 +336,7 @@ int main(int argc, char *argv[]) {
 	}
 
 //	TODO: Put a condition to save this file in H5 and not generate Off File
-    string outfile = base_path + ".data.h5";
+    string outfile = base_path + "_"+ std::to_string(voxel_size * 1000)[0]+ ".data.h5"; // Take the first element from voxel size
     bool success = combine_data(vtable, colortable, gridsize, voxelization_info, outfile);
     printf("\nThe status of print attempt is %d \n", success);
 	if (useThrustPath) {
