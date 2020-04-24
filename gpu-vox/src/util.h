@@ -62,9 +62,9 @@ struct voxinfo {
         centres.z = (bbox.max.z + bbox.min.z) / 2;
         //Scales all dimensions equally.
         glm::vec3 sizes;
-        sizes.x = unit.x *  float(gridsize.x);
-        sizes.y = unit.y *  float(gridsize.y);
-        sizes.z = unit.z *  float(gridsize.z);
+        sizes.x = bbox.max.x - bbox.min.x;
+        sizes.y = bbox.max.y - bbox.min.y;
+        sizes.z = bbox.max.z - bbox.min.z;
 //        Translation values we must use
         translation.x = -centres.x;
         translation.y = -centres.y;

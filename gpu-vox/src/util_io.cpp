@@ -42,7 +42,9 @@ void write_off(const unsigned int *vtable, const unsigned int *colortable, const
     uint n = 0;
     std::vector<string> faces;
     std::vector<string> verts;
-    long double secondScaler = 1 / voxinfo.scales.x; //Since scales remain the same for all three indices
+    double secondScaler_x = 1 / voxinfo.scales.x; //Since scales remain the same for all three indices
+    double secondScaler_y = 1 / voxinfo.scales.y; //Since scales remain the same for all three indices
+    double secondScaler_z = 1 / voxinfo.scales.z; //Since scales remain the same for all three indices
     double scale_x = voxinfo.gridsize.x;
     double scale_y = voxinfo.gridsize.y;
     double scale_z = voxinfo.gridsize.z;
@@ -74,37 +76,37 @@ void write_off(const unsigned int *vtable, const unsigned int *colortable, const
                                    std::to_string(colortable[int_location + 2]) + " " +
                                    std::to_string(label);
 
-                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string((x / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string((y / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string((y / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string((z / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string((z / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
-                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler - t_x) + " " +
-                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler - t_y) + " " +
-                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler - t_z) + " " +
+                    verts.push_back(std::to_string(((x + 1) / scale_x - 0.5) * secondScaler_x - t_x) + " " +
+                                    std::to_string(((y + 1) / scale_y - 0.5) * secondScaler_y - t_y) + " " +
+                                    std::to_string(((z + 1) / scale_z - 0.5) * secondScaler_z - t_z) + " " +
                                     color); // +0.5 to put vertex in the middle of the voxel
 
 //                    [0, 1, 2], [2, 3, 0], [1, 5, 6], [6, 2, 1], [7, 6, 5], [5, 4, 7],
@@ -337,11 +339,15 @@ bool write_transformations(const voxinfo &voxinfo, const std::string &output) {
     myfile.open(vox_info_file);
     long double scaling_factor = 1 / voxinfo.scales.x; //Since scales remain the same for all three indices
     myfile << "{";
-    myfile << "\"scales\": [" + to_string(scaling_factor) + ", " + to_string(scaling_factor) + ", " +
-              to_string(scaling_factor) + "]";
+    myfile << "\"scales\": [" + to_string( 1 / voxinfo.scales.x) + ", " + to_string( 1 / voxinfo.scales.y) + ", " +
+              to_string( 1 / voxinfo.scales.z) + "]";
     myfile << ", ";
     myfile << "\"translation\": [" + to_string(voxinfo.translation.x) + ", " + to_string(voxinfo.translation.y) + ", " +
               to_string(voxinfo.translation.z) + "]";
+//    Including the voxel size parameter as well
+    myfile << ", ";
+    myfile << "\"grid_size\": [" + to_string(voxinfo.gridsize.x) + ", " + to_string(voxinfo.gridsize.y) + ", " +
+              to_string(voxinfo.gridsize.z) + "]";
     myfile << "}";
     myfile.close();
 }
